@@ -1,0 +1,22 @@
+<launch>
+    <!-- 
+        The robot can be controlled either through CAN bus or UART port. Make sure the hardware
+        interface is set up correctly before attempting to connect to the robot.
+        
+        You only need to specify the port name, such as "can0", "/dev/ttyUSB0". The port should 
+        operate with the following configuration:
+        
+        * CAN bus: 500k
+        * UART: 115200, Parity None, 8-bit Data, 1 Stop Bit 
+    -->
+    <arg name="simulated_robot" default="true" />
+    <arg name="control_rate" default="50" />
+
+    <node name="hunter_base_sim_node" pkg="hunter_base" type="hunter_base_sim_node" output="screen">
+        <param name="simulated_robot" type="bool" value="$(arg simulated_robot)" />
+        <param name="control_rate" type="int" value="$(arg control_rate)" />
+
+        <param name="odom_frame" type="string" value="odom" />
+        <param name="base_frame" type="string" value="base_link" />
+    </node>
+</launch>
