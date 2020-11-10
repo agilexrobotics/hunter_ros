@@ -44,7 +44,32 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
     $ catkin_make
     ```
 
-3. Launch ROS nodes
+3. Setup CAN-To-USB adapter
+
+* Enable gs_usb kernel module
+    ```
+    $ sudo modprobe gs_usb
+    ```
+* Bringup can device
+   ```
+   $ sudo ip link set can0 up type can bitrate 500000
+   ```
+* If no error occured during the previous steps, you should be able to see the can device now by using command
+   ```
+   $ ifconfig -a
+   ```
+* Install and use can-utils to test the hardware
+    ```
+    $ sudo apt install can-utils
+    ```
+* Testing command
+    ```
+    # receiving data from can0
+    $ candump can0
+    # send data to can0
+    $ cansend can0 001#1122334455667788
+    ```
+4. Launch ROS nodes
  
 * Start the base node for the real robot
 
