@@ -40,7 +40,7 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
 	$ git checkout hunter_2_ros
 	```
     ```
-    $ cd ..
+    $ cd ~/catkin_ws
     $ catkin_make
     ```
 
