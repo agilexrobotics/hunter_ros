@@ -8,7 +8,7 @@
 
 ## Communication interface setup
 
-Please refer to the [README](https://github.com/westonrobot/wrp_sdk#hardware-interface) of "wrp_sdk" package for setup of communication interfaces.
+Please refer to the [README](https://github.com/westonrobot/ugv_sdk#hardware-interface) of "ugv_sdk" package for setup of communication interfaces.
 
 #### Note on CAN interface on Nvidia Jetson Platforms
 
@@ -33,7 +33,13 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
     ```
     $ cd ~/catkin_ws/src
     $ git clone https://github.com/agilexrobotics/agx_sdk.git
-    $ git clone https://github.com/agilexrobotics/hunter_ros.git
+    $ git clone https://github.com/agilexrobotics/hunter_2_ros.git
+	```
+    ```
+	$ cd agx_sdk
+	$ git checkout hunter_2_ros
+	```
+    ```
     $ cd ..
     $ catkin_make
     ```
