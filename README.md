@@ -32,34 +32,29 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
 
     ```
     $ cd ~/catkin_ws/src
-    $ git clone https://github.com/agilexrobotics/agx_sdk.git
+    $ git clone -b hunter_2_ros --depth=1 https://github.com/agilexrobotics/agx_sdk.git
     $ git clone https://github.com/agilexrobotics/hunter_2_ros.git
-	$ cd agx_sdk
-	$ git checkout hunter_2_ros
+	$ cd ..
+	$ catkin_make
 	```
-    ```
-    $ cd ~/catkin_ws
-    $ catkin_make
-    ```
-
+    
 3. Setup CAN-To-USB adapter
 
 * Enable gs_usb kernel module
     ```
     $ sudo modprobe gs_usb
     ```
-* Bringup can device
+    
+* first time use hunter-ros package
    ```
-   $ sudo ip link set can0 up type can bitrate 500000
+   $ rosrun hunter_bringup setup_can2usb.bash
    ```
-* If no error occured during the previous steps, you should be able to see the can device now by using command
+   
+* if not the first time use hunter-ros package(Run this command every time you turn off the power) 
    ```
-   $ ifconfig -a
+   $ rosrun hunter_bringup bringup_can2usb.bash
    ```
-* Install and use can-utils to test the hardware
-    ```
-    $ sudo apt install can-utils
-    ```
+   
 * Testing command
     ```
     # receiving data from can0
@@ -67,8 +62,9 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
     # send data to can0
     $ cansend can0 001#1122334455667788
     ```
+
 4. Launch ROS nodes
- 
+
 * Start the base node for the real robot
 
     ```
@@ -80,6 +76,7 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
     $ roslaunch hunter_bringup hunter_teleop_keyboard.launch
     ```
     
+
 **SAFETY PRECAUSION**: 
 
 Always have your remote controller ready to take over the control whenever necessary. 
