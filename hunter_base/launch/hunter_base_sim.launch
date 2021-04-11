@@ -11,10 +11,12 @@
     -->
     <arg name="simulated_robot" default="true" />
     <arg name="control_rate" default="50" />
+    <arg name="publish_tf" default="true" />
 
     <node name="hunter_base_sim_node" pkg="hunter_base" type="hunter_base_sim_node" output="screen">
         <param name="simulated_robot" type="bool" value="$(arg simulated_robot)" />
         <param name="control_rate" type="int" value="$(arg control_rate)" />
+        <param name="publish_tf" type="bool" value="$(arg publish_tf)" />
 
         <param name="odom_frame" type="string" value="odom" />
         <param name="base_frame" type="string" value="base_link" />

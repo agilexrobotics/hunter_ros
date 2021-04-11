@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
                                   std::string("base_link"));
   private_node.param<bool>("simulated_robot", messenger.simulated_robot_, true);
   private_node.param<int>("control_rate", messenger.sim_control_rate_, 50);
+  private_node.param<bool>("publish_tf", messenger.publish_tf_,  true);
 
   // no connection for simulated robot
   // setup ROS subscription

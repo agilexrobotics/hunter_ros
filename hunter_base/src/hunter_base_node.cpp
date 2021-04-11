@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
   private_node.param<bool>("simulated_robot", messenger.simulated_robot_,
                            false);
   private_node.param<int>("control_rate", messenger.sim_control_rate_, 50);
+  private_node.param<bool>("publish_tf", messenger.publish_tf_,  true);
 
   // connect to robot and setup ROS subscription
   if (port_name.find("can") != std::string::npos) {
