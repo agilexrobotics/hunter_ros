@@ -246,7 +246,7 @@ void HunterROSMessenger::PublishOdometryToROS(double linear, double angular,
 
   odom_msg.twist.twist.linear.x = linear_speed_;
   odom_msg.twist.twist.linear.y = 0.0;
-  odom_msg.twist.twist.angular.z = steering_angle_;
+  odom_msg.twist.twist.angular.z = linear_speed_ / l * std::tan(steering_angle_);
 
 //   std::cerr << "linear: " << linear_speed_ << " , angular: " << steering_angle_
 //             << " , pose: (" << position_x_ << "," << position_y_ << ","
