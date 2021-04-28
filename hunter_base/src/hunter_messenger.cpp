@@ -137,9 +137,9 @@ void HunterROSMessenger::PublishStateToROS() {
 
   // TODO SHOULD NOT use this correction when new Firmware with right 
   //     cmd/feedback of steering angle is updated
-  double corrected_angle = state.steering_angle * 26.5 / 40.0;
-  double phi = ConvertInnerAngleToCentral(corrected_angle);
-  //   double phi = ConvertInnerAngleToCentral(state.steering_angle);
+  // double corrected_angle = state.steering_angle * 26.5 / 40.0;
+  // double phi = ConvertInnerAngleToCentral(corrected_angle);
+  double phi = ConvertInnerAngleToCentral(state.steering_angle);
   status_msg.steering_angle = phi;
   status_msg.base_state = state.base_state;
   status_msg.control_mode = state.control_mode;
@@ -247,6 +247,21 @@ void HunterROSMessenger::PublishOdometryToROS(double linear, double angular,
   odom_msg.twist.twist.linear.x = linear_speed_;
   odom_msg.twist.twist.linear.y = 0.0;
   odom_msg.twist.twist.angular.z = linear_speed_ / l * std::tan(steering_angle_);
+
+  odom_msg.pose.covariance = {
+    0.001,      0.0,        0.0,        0.0,        0.0,        0.0,
+    0.0,        0.001,      0.0,        0.0,        0.0,        0.0,
+    0.0,        0.0,        1000000.0,  0.0,        0.0,        0.0,
+    0.0,        0.0,        0.0,        1000000.0,  0.0,        0.0,
+    0.0,        0.0,        0.0,        0.0,        1000000.0,  0.0,
+    0.0,        0.0,        0.0,        0.0,        0.0,        1000.0};
+  odom_msg.twist.covariance = {
+    0.001,      0.0,        0.0,        0.0,        0.0,        0.0,
+    0.0,        0.001,      0.0,        0.0,        0.0,        0.0,
+    0.0,        0.0,        1000000.0,  0.0,        0.0,        0.0,
+    0.0,        0.0,        0.0,        1000000.0,  0.0,        0.0,
+    0.0,        0.0,        0.0,        0.0,        1000000.0,  0.0,
+    0.0,        0.0,        0.0,        0.0,        0.0,        1000.0};
 
 //   std::cerr << "linear: " << linear_speed_ << " , angular: " << steering_angle_
 //             << " , pose: (" << position_x_ << "," << position_y_ << ","
