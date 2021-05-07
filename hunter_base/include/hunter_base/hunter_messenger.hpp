@@ -59,6 +59,7 @@ class HunterROSMessenger {
 
   bool simulated_robot_ = false;
   int sim_control_rate_ = 50;
+  bool publish_tf_ = true;
 
   void SetupSubscription();
   void ResetOdometry();
