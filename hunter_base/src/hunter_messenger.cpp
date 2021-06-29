@@ -130,20 +130,21 @@ void HunterROSMessenger::PublishStateToROS() {
 
   status_msg.header.stamp = current_time_;
 
-  double left_vel = -state.actuator_states[2].motor_rpm / 60.0 * 2 * M_PI /
-                    HunterParams::transmission_reduction_rate *
-                    HunterParams::wheel_radius;
-  double right_vel = state.actuator_states[1].motor_rpm / 60.0 * 2 * M_PI /
-                     HunterParams::transmission_reduction_rate *
-                     HunterParams::wheel_radius;
-  status_msg.linear_velocity = (left_vel + right_vel) / 2.0;
-
+//  double left_vel = -state.actuator_states[2].motor_rpm / 60.0 * 2 * M_PI /
+//                    HunterParams::transmission_reduction_rate *
+//                    HunterParams::wheel_radius;
+//  double right_vel = state.actuator_states[1].motor_rpm / 60.0 * 2 * M_PI /
+//                     HunterParams::transmission_reduction_rate *
+//                     HunterParams::wheel_radius;
+//  status_msg.linear_velocity = (left_vel + right_vel) / 2.0;
+  status_msg.linear_velocity = state.linear_velocity;
   // TODO SHOULD NOT use this correction when new Firmware with right 
   //     cmd/feedback of steering angle is updated
   // double corrected_angle = state.steering_angle * 26.5 / 40.0;
   // double phi = ConvertInnerAngleToCentral(corrected_angle);
-  double phi = ConvertInnerAngleToCentral(state.steering_angle);
-  status_msg.steering_angle = phi;
+//  double phi = ConvertInnerAngleToCentral(state.steering_angle);
+//  status_msg.steering_angle = phi;
+  status_msg.steering_angle = state.steering_angle;
   status_msg.base_state = state.base_state;
   status_msg.control_mode = state.control_mode;
   status_msg.park_mode = state.park_mode;
