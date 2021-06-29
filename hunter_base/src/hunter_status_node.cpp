@@ -7,7 +7,7 @@
  * Copyright (c) 2019 Ruixiang Du (rdu)
  */
 
-#include "wrp_sdk/platforms/hunter/hunter_base.hpp"
+#include "ugv_sdk/hunter/hunter_base.hpp"
 
 using namespace westonrobot;
 
@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
     std::cout << "velocity (linear, angular): " << state.linear_velocity << ", "
               << state.steering_angle << std::endl;
     for (int i = 0; i < 3; ++i)
-      std::cout << "motor rpm " << i << ": " << state.motor_H_state[i].rpm
+      std::cout << "motor rpm " << i << ": " << state.actuator_states[i].motor_rpm
                 << std::endl;
     std::cout << "-------------------------------" << std::endl;
 

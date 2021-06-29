@@ -19,7 +19,7 @@
 // #include <tf/transform_broadcaster.h>
 #include <tf2_ros/transform_broadcaster.h>
 
-#include "wrp_sdk/platforms/hunter/hunter_base.hpp"
+#include "ugv_sdk/hunter/hunter_base.hpp"
 
 #include "ascent/Ascent.h"
 #include "ascent/Utility.h"
@@ -78,6 +78,7 @@ class HunterROSMessenger {
 
   ros::Publisher odom_publisher_;
   ros::Publisher status_publisher_;
+  ros::Publisher BMS_status_publisher_;
   ros::Subscriber motion_cmd_subscriber_;
   ros::Subscriber integrator_reset_subscriber_;
   tf2_ros::TransformBroadcaster tf_broadcaster_;

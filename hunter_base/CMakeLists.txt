@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf2
   tf2_ros
-  wrp_sdk
+  ugv_sdk
 )
 
 ## System dependencies are found with CMake's conventions

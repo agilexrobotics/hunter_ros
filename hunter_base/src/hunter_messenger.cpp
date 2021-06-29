@@ -22,6 +22,7 @@
 #include "hunter_base/hunter_messenger.hpp"
 #include "hunter_msgs/HunterStatus.h"
 #include "hunter_msgs/HunterMotorState.h"
+#include "hunter_msgs/HunterBmsStatus.h"
 
 namespace westonrobot {
 HunterROSMessenger::HunterROSMessenger(ros::NodeHandle *nh)
@@ -35,6 +36,7 @@ void HunterROSMessenger::SetupSubscription() {
   odom_publisher_ = nh_->advertise<nav_msgs::Odometry>(odom_frame_, 50);
   status_publisher_ =
       nh_->advertise<hunter_msgs::HunterStatus>("/hunter_status", 10);
+  BMS_status_publisher_ = nh_->advertise<hunter_msgs::HunterBmsStatus>("/BMS_status", 10);
 
   // cmd subscriber
   motion_cmd_subscriber_ = nh_->subscribe<geometry_msgs::Twist>(
@@ -61,7 +63,7 @@ void HunterROSMessenger::TwistCmdCallback(
   if (!simulated_robot_) {
     double phi_i = ConvertCentralAngleToInner(msg->angular.z);
     // std::cout << "set steering angle: " << phi_i << std::endl;
-    hunter_->SetMotionCommand(msg->linear.x, msg->angular.z, phi_i);
+    hunter_->SetMotionCommand(msg->linear.x, steer_cmd, phi_i);
   } else {
     std::lock_guard<std::mutex> guard(twist_mutex_);
     current_twist_ = *msg.get();
@@ -124,13 +126,14 @@ void HunterROSMessenger::PublishStateToROS() {
 
   // publish hunter state message
   hunter_msgs::HunterStatus status_msg;
+  hunter_msgs::HunterBmsStatus bms_msg;
 
   status_msg.header.stamp = current_time_;
 
-  double left_vel = -state.motor_H_state[2].rpm / 60.0 * 2 * M_PI /
+  double left_vel = -state.actuator_states[2].motor_rpm / 60.0 * 2 * M_PI /
                     HunterParams::transmission_reduction_rate *
                     HunterParams::wheel_radius;
-  double right_vel = state.motor_H_state[1].rpm / 60.0 * 2 * M_PI /
+  double right_vel = state.actuator_states[1].motor_rpm / 60.0 * 2 * M_PI /
                      HunterParams::transmission_reduction_rate *
                      HunterParams::wheel_radius;
   status_msg.linear_velocity = (left_vel + right_vel) / 2.0;
@@ -147,16 +150,25 @@ void HunterROSMessenger::PublishStateToROS() {
   status_msg.fault_code = state.fault_code;
   status_msg.battery_voltage = state.battery_voltage;
   for (int i = 0; i < 3; ++i) {
-    status_msg.motor_states[i].current = state.motor_H_state[i].current;
-    status_msg.motor_states[i].rpm = state.motor_H_state[i].rpm;
-    status_msg.motor_states[i].motor_pose = state.motor_H_state[i].motor_pose;
-    status_msg.motor_states[i].temperature = state.motor_L_state[i].motor_temperature;
+    status_msg.motor_states[i].current = state.actuator_states[i].motor_current;
+    status_msg.motor_states[i].rpm = state.actuator_states[i].motor_rpm;
+    status_msg.motor_states[i].motor_pose = state.actuator_states[i].motor_pulses;
+    status_msg.motor_states[i].temperature = state.actuator_states[i].motor_temperature;
+    status_msg.driver_states[i].driver_state = state.actuator_states[i].driver_state;
+    status_msg.driver_states[i].driver_voltage = state.actuator_states[i].driver_voltage;
+    status_msg.driver_states[i].driver_temperature = state.actuator_states[i].driver_temperature;
   }
-  for (int i = 0; i < 3; ++i) {
-    status_msg.driver_states[i].driver_state = state.motor_L_state[i].driver_state;
-    status_msg.driver_states[i].driver_voltage = state.motor_L_state[i].driver_voltage;
-    status_msg.driver_states[i].driver_temperature = state.motor_L_state[i].driver_temperature;
-  }
+  bms_msg.SOC                   = state.SOC;
+  bms_msg.SOH                   = state.SOH;
+  bms_msg.Alarm_Status_1        = state.Alarm_Status_1;
+  bms_msg.Alarm_Status_2        = state.Alarm_Status_2;
+  bms_msg.Warning_Status_1      = state.Warning_Status_1;
+  bms_msg.Warning_Status_2      = state.Warning_Status_2;
+  bms_msg.battery_voltage       = state.bms_battery_voltage;
+  bms_msg.battery_current       = state.battery_current;
+  bms_msg.battery_temperature   = state.battery_temperature;
+
+  BMS_status_publisher_.publish(bms_msg);
   status_publisher_.publish(status_msg);
 
   // publish odometry and tf

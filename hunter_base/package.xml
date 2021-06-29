@@ -55,21 +55,21 @@
   <build_depend>std_msgs</build_depend>
   <build_depend>tf2</build_depend>
   <build_depend>tf2_ros</build_depend>
-  <build_depend>wrp_sdk</build_depend>
+  <build_depend>ugv_sdk</build_depend>
   <build_export_depend>hunter_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>sensor_msgs</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
   <build_export_depend>tf2</build_export_depend>
   <build_export_depend>tf2_ros</build_export_depend>
-  <build_export_depend>wrp_sdk</build_export_depend>
+  <build_export_depend>ugv_sdk</build_export_depend>
   <exec_depend>hunter_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>tf2</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
-  <exec_depend>wrp_sdk</exec_depend>
+  <exec_depend>ugv_sdk</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
