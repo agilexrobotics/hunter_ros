@@ -5,6 +5,7 @@
 * hunter_base: a ROS wrapper around Hunter SDK to monitor and control the robot
 * hunter_bringup: launch and configuration files to start ROS nodes 
 * hunter_msgs: hunter related message definitions
+ 
 
 ## Communication interface setup
 
