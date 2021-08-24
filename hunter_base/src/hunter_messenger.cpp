@@ -63,7 +63,7 @@ void HunterROSMessenger::TwistCmdCallback(
   if (!simulated_robot_) {
     double phi_i = ConvertCentralAngleToInner(msg->angular.z);
     // std::cout << "set steering angle: " << phi_i << std::endl;
-    hunter_->SetMotionCommand(msg->linear.x, steer_cmd, phi_i);
+    hunter_->SetMotionCommand(msg->linear.x,phi_i);
   } else {
     std::lock_guard<std::mutex> guard(twist_mutex_);
     current_twist_ = *msg.get();
