@@ -9,7 +9,7 @@
 
 using namespace westonrobot;
 
-HunterBase robot;
+std::unique_ptr<HunterRobot> robot;
 
 void DetachRobot(int signal) {
   robot.Disconnect();

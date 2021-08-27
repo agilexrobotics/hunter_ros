@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/zps/core/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/zps/core/src/async_port/include/**",
+        "/home/zps/core/src/hunter_ros-master/hunter_base/include/**",
+        "/home/zps/core/src/loam_velodyne/include/**",
+        "/home/zps/core/src/scout_ros/scout_base/include/**",
+        "/home/zps/core/src/tracer_ros/tracer_base/include/**",
+        "/home/zps/core/src/tracer_ros/tracer_gazebo_sim/include/**",
+        "/home/zps/core/src/ugv_sdk/include/**",
+        "/home/zps/core/src/velodyne/velodyne_driver/include/**",
+        "/home/zps/core/src/velodyne/velodyne_laserscan/include/**",
+        "/home/zps/core/src/velodyne/velodyne_pcl/include/**",
+        "/home/zps/core/src/velodyne/velodyne_pointcloud/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

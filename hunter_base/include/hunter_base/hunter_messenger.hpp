@@ -16,16 +16,16 @@
 
 #include <string>
 
-// #include <tf/transform_broadcaster.h>
 #include <tf2_ros/transform_broadcaster.h>
 
-#include "ugv_sdk/hunter/hunter_base.hpp"
-
+#include "ugv_sdk/mobile_robot/hunter_robot.hpp"
+#include "ugv_sdk/utilities/protocol_detector.hpp"
+#include <mutex>
 #include "ascent/Ascent.h"
 #include "ascent/Utility.h"
 #include "hunter_base/bicycle_model.hpp"
 #include "hunter_base/hunter_params.hpp"
-// #include "hunter_base/system_propagator.hpp"
+
 
 namespace westonrobot {
 template <typename SystemModel>
@@ -52,7 +52,7 @@ class SystemPropagator {
 class HunterROSMessenger {
  public:
   explicit HunterROSMessenger(ros::NodeHandle *nh);
-  HunterROSMessenger(HunterBase *hunter, ros::NodeHandle *nh);
+  HunterROSMessenger(HunterRobot *hunter, ros::NodeHandle *nh);
 
   std::string odom_frame_;
   std::string base_frame_;
@@ -70,7 +70,7 @@ class HunterROSMessenger {
   void GetCurrentMotionCmdForSim(double &linear, double &angular);
 
  private:
-  HunterBase *hunter_;
+  HunterRobot *hunter_;
   ros::NodeHandle *nh_;
 
   std::mutex twist_mutex_;

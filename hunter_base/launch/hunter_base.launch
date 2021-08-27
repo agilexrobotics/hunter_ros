@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
     <!-- 
         The robot can be controlled either through CAN bus or UART port. Make sure the hardware
