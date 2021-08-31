@@ -61,8 +61,9 @@ void HunterROSMessenger::TwistCmdCallback(
 
   // TODO add cmd limits here
   if (!simulated_robot_) {
-    double phi_i = ConvertCentralAngleToInner(msg->angular.z);
-//    std::cout << "set steering angle: " << phi_i << std::endl;
+    double phi_i = ConvertCentralAngleToInner(steer_cmd);
+//    double phi_i = steer_cmd;
+    std::cout << "set steering angle: " << phi_i << std::endl;
     hunter_->ReleaseBrake();
     hunter_->SetMotionCommand(msg->linear.x,phi_i);
   } else {
@@ -142,6 +143,8 @@ void HunterROSMessenger::PublishStateToROS() {
   //     cmd/feedback of steering angle is updated
   //double corrected_angle = robot_state.motion_state.steering_angle * 26.5 / 40.0;
   double phi = ConvertInnerAngleToCentral(robot_state.motion_state.steering_angle);
+  std::cout << "feedback steering angle: " << phi << std::endl;
+//  double phi = robot_state.motion_state.steering_angle;
   //   double phi = ConvertInnerAngleToCentral(state.steering_angle);
   status_msg.steering_angle = phi;
 
