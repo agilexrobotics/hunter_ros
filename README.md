@@ -5,11 +5,11 @@
 * hunter_base: a ROS wrapper around Hunter SDK to monitor and control the robot
 * hunter_bringup: launch and configuration files to start ROS nodes 
 * hunter_msgs: hunter related message definitions
- 
+
 
 ## Communication interface setup
 
-Please refer to the [README](https://github.com/westonrobot/ugv_sdk#hardware-interface) of "ugv_sdk" package for setup of communication interfaces.
+Please refer to the [README](https://github.com/agilexrobotics/ugv_sdk#hardware-interface) of "ugv_sdk" package for setup of communication interfaces.
 
 #### Note on CAN interface on Nvidia Jetson Platforms
 
@@ -29,7 +29,7 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
 
     ```
     $ cd ~/catkin_ws/src
-    $ git clone --recursive https://github.com/agilexrobotics/ugv_sdk.git
+    $ git clone https://github.com/agilexrobotics/ugv_sdk.git
     $ git clone https://github.com/agilexrobotics/hunter_ros.git
     $ cd ..
     $ catkin_make
@@ -37,7 +37,7 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
     
 3. Setup CAN-To-USB adapter
 
-* Enable gs_usb kernel module
+* Enable gs_usb kernel module(If you have already added this module, you do not need to add it)
     ```
     $ sudo modprobe gs_usb
     ```
@@ -56,8 +56,6 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
     ```
     # receiving data from can0
     $ candump can0
-    # send data to can0
-    $ cansend can0 001#1122334455667788
     ```
 
 4. Launch ROS nodes
@@ -72,7 +70,6 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
     ```
     $ roslaunch hunter_bringup hunter_teleop_keyboard.launch
     ```
-    
 
 **SAFETY PRECAUSION**: 
 
