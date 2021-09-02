@@ -29,22 +29,31 @@ int main(int argc, char **argv) {
 
   // check protocol version
   ProtocolDectctor detector;
-  detector.Connect(port_name);
-  auto proto = detector.DetectProtocolVersion(5);
-  if (proto == ProtocolVersion::AGX_V1) {
-    std::cout << "Detected protocol: AGX_V1" << std::endl;
-    robot = std::unique_ptr<HunterRobot>(
-    new HunterRobot(ProtocolVersion::AGX_V1));
-  } else if (proto == ProtocolVersion::AGX_V2) {
-    std::cout << "Detected protocol: AGX_V2" << std::endl;
-    robot = std::unique_ptr<HunterRobot>(
-    new HunterRobot(ProtocolVersion::AGX_V2));
-  } else {
-    std::cout << "Detected protocol: UNKONWN" << std::endl;
-    return -1;
+  try
+  {
+      detector.Connect(port_name);
+      auto proto = detector.DetectProtocolVersion(5);
+      if (proto == ProtocolVersion::AGX_V1) {
+        std::cout << "Detected protocol: AGX_V1" << std::endl;
+        robot = std::unique_ptr<HunterRobot>(
+        new HunterRobot(ProtocolVersion::AGX_V1));
+      } else if (proto == ProtocolVersion::AGX_V2) {
+        std::cout << "Detected protocol: AGX_V2" << std::endl;
+        robot = std::unique_ptr<HunterRobot>(
+        new HunterRobot(ProtocolVersion::AGX_V2));
+      } else {
+        std::cout << "Detected protocol: UNKONWN" << std::endl;
+        return -1;
+      }
+      if (robot == nullptr)
+        std::cout << "Failed to create robot object" << std::endl;
   }
-  if (robot == nullptr)
-    std::cout << "Failed to create robot object" << std::endl;
+  catch (std::exception error)
+  {
+      ROS_ERROR("please bringup up can or make sure can port exist");
+      ros::shutdown();
+  }
+
 
   // instantiate a robot object
   HunterROSMessenger messenger(robot.get(), &node);
