@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   // fetch parameters before connecting to robot
   std::string port_name;
   private_node.param<std::string>("port_name", port_name, std::string("can0"));
-
+  int version = 2;
   // check protocol version
   ProtocolDectctor detector;
   try
@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
         std::cout << "Detected protocol: AGX_V1" << std::endl;
         robot = std::unique_ptr<HunterRobot>(
         new HunterRobot(ProtocolVersion::AGX_V1));
+        version = 1;
       } else if (proto == ProtocolVersion::AGX_V2) {
         std::cout << "Detected protocol: AGX_V2" << std::endl;
         robot = std::unique_ptr<HunterRobot>(
@@ -57,7 +58,18 @@ int main(int argc, char **argv) {
 
   // instantiate a robot object
   HunterROSMessenger messenger(robot.get(), &node);
-
+  if(version == 1)
+  {
+    messenger.SetTrack(HunterV1Params::track);
+    messenger.SetWeelbase(HunterV1Params::wheelbase);
+    messenger.SetMaxSteerAngleCentral(HunterV1Params::max_steer_angle_central);
+  }
+  else
+  {
+      messenger.SetTrack(HunterV2Params::track);
+      messenger.SetWeelbase(HunterV2Params::wheelbase);
+      messenger.SetMaxSteerAngleCentral(HunterV2Params::max_steer_angle_central);
+  }
 
   // fetch parameters before connecting to robot
   private_node.param<std::string>("odom_frame", messenger.odom_frame_,

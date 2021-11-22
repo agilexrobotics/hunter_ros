@@ -60,6 +60,7 @@ class HunterROSMessenger {
   bool simulated_robot_ = false;
   int sim_control_rate_ = 50;
   bool publish_tf_ = true;
+  int version = 2;
 
   void SetupSubscription();
   void ResetOdometry();
@@ -68,7 +69,15 @@ class HunterROSMessenger {
   void PublishSimStateToROS(double linear, double angular);
 
   void GetCurrentMotionCmdForSim(double &linear, double &angular);
-
+  void SetWeelbase(float Weelbase){
+    l = Weelbase;
+  }
+  void SetTrack(float Track){
+    w = Track;
+  }
+  void SetMaxSteerAngleCentral(float Angle){
+    max_steer_angle_central = Angle;
+  }
  private:
   HunterRobot *hunter_;
   ros::NodeHandle *nh_;
@@ -87,10 +96,12 @@ class HunterROSMessenger {
   double linear_speed_ = 0.0;
   double steering_angle_ = 0.0;
 
-  static constexpr double l = HunterParams::wheelbase;
-  static constexpr double w = HunterParams::track;
+//  static constexpr double l = HunterV2Params::wheelbase;
+//  static constexpr double w = HunterV2Params::track;
   static constexpr double steer_angle_tolerance = 0.005;  // ~+-0.287 degrees
-
+  double l = 0.0;
+  double w = 0.0;
+  double max_steer_angle_central = 0.0;
   // state variables
   double position_x_ = 0.0;
   double position_y_ = 0.0;

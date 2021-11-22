@@ -54,16 +54,17 @@ void HunterROSMessenger::ResetOdomIntegratorCallback(
 void HunterROSMessenger::TwistCmdCallback(
     const geometry_msgs::Twist::ConstPtr &msg) {
   double steer_cmd = msg->angular.z;
-  if(steer_cmd > HunterParams::max_steer_angle_central)
-    steer_cmd = HunterParams::max_steer_angle_central;
-  if(steer_cmd < - HunterParams::max_steer_angle_central)
-      steer_cmd = - HunterParams::max_steer_angle_central;
-
+  if(steer_cmd > max_steer_angle_central)
+    steer_cmd = max_steer_angle_central;
+  if(steer_cmd < - max_steer_angle_central)
+      steer_cmd = - max_steer_angle_central;
+  ROS_INFO("max_steer_angle_central:%f",max_steer_angle_central);
   // TODO add cmd limits here
   if (!simulated_robot_) {
     double phi_i = ConvertCentralAngleToInner(steer_cmd);
 //    double phi_i = steer_cmd;
-    std::cout << "set steering angle: " << phi_i << std::endl;
+//    std::cout << "set steering angle: " << phi_i << std::endl;
+    ROS_DEBUG("set steering angle:%f",phi_i);
     hunter_->ReleaseBrake();
     hunter_->SetMotionCommand(msg->linear.x,phi_i);
   } else {
@@ -143,7 +144,8 @@ void HunterROSMessenger::PublishStateToROS() {
   //     cmd/feedback of steering angle is updated
   //double corrected_angle = robot_state.motion_state.steering_angle * 26.5 / 40.0;
   double phi = ConvertInnerAngleToCentral(robot_state.motion_state.steering_angle);
-  std::cout << "feedback steering angle: " << phi << std::endl;
+  ROS_DEBUG("feedback steering angle:%f",phi);
+  //std::cout << "feedback steering angle: " << phi << std::endl;
 //  double phi = robot_state.motion_state.steering_angle;
   //   double phi = ConvertInnerAngleToCentral(state.steering_angle);
   status_msg.steering_angle = phi;

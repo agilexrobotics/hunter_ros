@@ -49,7 +49,7 @@ class BicycleKinematics {
 
  private:
   control_t u_ = {0.0, 0.0};
-  static constexpr double L = HunterParams::wheelbase;
+  static constexpr double L = HunterV2Params::wheelbase;
 };
 }  // namespace westonrobot
 
