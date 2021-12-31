@@ -58,7 +58,7 @@ void HunterROSMessenger::TwistCmdCallback(
     steer_cmd = max_steer_angle_central;
   if(steer_cmd < - max_steer_angle_central)
       steer_cmd = - max_steer_angle_central;
-  ROS_INFO("max_steer_angle_central:%f",max_steer_angle_central);
+  ROS_DEBUG("max_steer_angle_central:%f",max_steer_angle_central);
   // TODO add cmd limits here
   if (!simulated_robot_) {
     double phi_i = ConvertCentralAngleToInner(steer_cmd);
