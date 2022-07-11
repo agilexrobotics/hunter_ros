@@ -16,26 +16,23 @@ Please refer to the [README](https://github.com/agilexrobotics/ugv_sdk#hardware-
 Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main SOC. If you're using a dev kit, you need to add a CAN transceiver for proper CAN communication. 
 
 ## Basic usage of the ROS package
-
-1. Install dependent packages
-
-    ```
-    $ sudo apt install -y ros-$ROS_DISTRO-teleop-twist-keyboard
-    ```
     
-2. Clone the packages into your catkin workspace and compile
+1. Clone the packages into your catkin workspace and compile
 
     (the following instructions assume your catkin workspace is at: ~/catkin_ws/src)
 
     ```
     $ cd ~/catkin_ws/src
-    $ git clone https://github.com/agilexrobotics/ugv_sdk.git
     $ git clone https://github.com/agilexrobotics/hunter_ros.git
+    # for China user, using 'git clone https://ghproxy.com/https://github.com/agilexrobotics/hunter_ros.git' to speedup download.
+    $ chmod +x setup.sh
+    $ ./setup.sh
     $ cd ..
     $ catkin_make
+    $ source devel/setup.bash
     ```
     
-3. Setup CAN-To-USB adapter
+2. Setup CAN-To-USB adapter
 
 * Enable gs_usb kernel module(If you have already added this module, you do not need to add it)
     ```
@@ -58,7 +55,7 @@ Nvidia Jeston TX2/Xavier/XavierNX have CAN controller(s) integrated in the main 
     $ candump can0
     ```
 
-4. Launch ROS nodes
+3. Launch ROS nodes
 
 * Start the base node for the real robot
 
