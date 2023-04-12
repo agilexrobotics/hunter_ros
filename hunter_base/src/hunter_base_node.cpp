@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
   private_node.param<std::string>("port_name", port_name, std::string("can0"));
   int version = 2;
   // check protocol version
-  ProtocolDectctor detector;
+  ProtocolDetector detector;
   try
   {
       detector.Connect(port_name);
