@@ -127,7 +127,7 @@ void HunterROSMessenger::PublishStateToROS() {
 
   auto robot_state = hunter_->GetRobotState();
   auto actuator_state = hunter_->GetActuatorState();
-
+  auto bms_state = hunter_->GetCommonSensorState();
   // publish hunter state message
   hunter_msgs::HunterStatus status_msg;
   hunter_msgs::HunterBmsStatus bms_msg;
@@ -179,16 +179,15 @@ void HunterROSMessenger::PublishStateToROS() {
       }
   }
 
-//  bms_msg.SOC                   = state.SOC;
-//  bms_msg.SOH                   = state.SOH;
-//  bms_msg.Alarm_Status_1        = state.Alarm_Status_1;
-//  bms_msg.Alarm_Status_2        = state.Alarm_Status_2;
-//  bms_msg.Warning_Status_1      = state.Warning_Status_1;
-//  bms_msg.Warning_Status_2      = state.Warning_Status_2;
-//  bms_msg.battery_voltage       = state.bms_battery_voltage;
-//  bms_msg.battery_current       = state.battery_current;
-//  bms_msg.battery_temperature   = state.battery_temperature;
-
+  bms_msg.SOC                   = bms_state.bms_basic_state.battery_soc;
+  bms_msg.SOH                   = bms_state.bms_basic_state.battery_soh;
+  bms_msg.battery_voltage       = bms_state.bms_basic_state.voltage;
+  bms_msg.battery_current       = bms_state.bms_basic_state.current;
+  bms_msg.battery_temperature   = bms_state.bms_basic_state.temperature;
+  bms_msg.Alarm_Status_1        = bms_state.bms_extend_state.alarm_status_1;
+  bms_msg.Alarm_Status_2        = bms_state.bms_extend_state.alarm_status_2;
+  bms_msg.Warning_Status_1      = bms_state.bms_extend_state.warn_status_1;
+  bms_msg.Warning_Status_1      = bms_state.bms_extend_state.warn_status_2;
   BMS_status_publisher_.publish(bms_msg);
   status_publisher_.publish(status_msg);
 
