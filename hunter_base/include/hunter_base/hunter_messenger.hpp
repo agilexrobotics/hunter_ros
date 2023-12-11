@@ -78,6 +78,9 @@ class HunterROSMessenger {
   void SetMaxSteerAngleCentral(float Angle){
     max_steer_angle_central = Angle;
   }
+  void SetMaxSteerAngle(float Angle){
+    max_steer_angle = Angle;
+  }
  private:
   HunterRobot *hunter_;
   ros::NodeHandle *nh_;
@@ -102,6 +105,7 @@ class HunterROSMessenger {
   double l = 0.0;
   double w = 0.0;
   double max_steer_angle_central = 0.0;
+  double max_steer_angle = 0.0;
   // state variables
   double position_x_ = 0.0;
   double position_y_ = 0.0;
@@ -114,6 +118,7 @@ class HunterROSMessenger {
 
   double ConvertInnerAngleToCentral(double angle);
   double ConvertCentralAngleToInner(double angle);
+  double AngelVelocity2Angel(geometry_msgs::Twist msg,double &radius);
 
   void TwistCmdCallback(const geometry_msgs::Twist::ConstPtr &msg);
   void ResetOdomIntegratorCallback(const std_msgs::Bool::ConstPtr &msg);
