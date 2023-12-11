@@ -53,17 +53,20 @@ void HunterROSMessenger::ResetOdomIntegratorCallback(
 
 void HunterROSMessenger::TwistCmdCallback(
     const geometry_msgs::Twist::ConstPtr &msg) {
-  double steer_cmd = msg->angular.z;
-  if(steer_cmd > max_steer_angle_central)
-    steer_cmd = max_steer_angle_central;
-  if(steer_cmd < - max_steer_angle_central)
-      steer_cmd = - max_steer_angle_central;
-  ROS_DEBUG("max_steer_angle_central:%f",max_steer_angle_central);
+  // double steer_cmd = msg->angular.z;
+  // if(steer_cmd > max_steer_angle_central)
+  //   steer_cmd = max_steer_angle_central;
+  // if(steer_cmd < - max_steer_angle_central)
+  //     steer_cmd = - max_steer_angle_central;
+  // ROS_DEBUG("max_steer_angle_central:%f",max_steer_angle_central);
   // TODO add cmd limits here
   if (!simulated_robot_) {
-    double phi_i = ConvertCentralAngleToInner(steer_cmd);
+    // double phi_i = ConvertCentralAngleToInner(steer_cmd);
 //    double phi_i = steer_cmd;
-//    std::cout << "set steering angle: " << phi_i << std::endl;
+
+    double radian = 0;
+    double phi_i = AngelVelocity2Angel(*msg,radian);
+
     ROS_DEBUG("set steering angle:%f",phi_i);
     hunter_->ReleaseBrake();
     hunter_->SetMotionCommand(msg->linear.x,phi_i);
@@ -300,5 +303,29 @@ void HunterROSMessenger::PublishOdometryToROS(double linear, double angular,
 //             << theta_ << ")" << std::endl;
 
   odom_publisher_.publish(odom_msg);
+}
+
+double HunterROSMessenger::AngelVelocity2Angel(geometry_msgs::Twist msg,double &radius)
+{
+  double linear = fabs(msg.linear.x);
+  double angular = fabs(msg.angular.z);
+  if(angular == 0)
+  {
+    return 0.0;
+  }
+
+  radius = linear / angular;
+
+  int k = msg.angular.z / fabs(msg.angular.z);
+  if ((radius-l)<0 )
+  {
+    return  k*max_steer_angle;
+  }
+
+  double phi_i;
+  phi_i = atan(l/(radius-w/2));
+  if(msg.linear.x<0)
+    phi_i *= -1.0;
+  return k*phi_i;
 }
 }  // namespace westonrobot

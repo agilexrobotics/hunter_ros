@@ -63,12 +63,14 @@ int main(int argc, char **argv) {
     messenger.SetTrack(HunterV1Params::track);
     messenger.SetWeelbase(HunterV1Params::wheelbase);
     messenger.SetMaxSteerAngleCentral(HunterV1Params::max_steer_angle_central);
+    messenger.SetMaxSteerAngle(HunterV1Params::max_steer_angle);
   }
   else
   {
       messenger.SetTrack(HunterV2Params::track);
       messenger.SetWeelbase(HunterV2Params::wheelbase);
       messenger.SetMaxSteerAngleCentral(HunterV2Params::max_steer_angle_central);
+      messenger.SetMaxSteerAngle(HunterV2Params::max_steer_angle);
   }
 
   // fetch parameters before connecting to robot
