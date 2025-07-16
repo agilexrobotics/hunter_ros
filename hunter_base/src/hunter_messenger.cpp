@@ -53,20 +53,17 @@ void HunterROSMessenger::ResetOdomIntegratorCallback(
 
 void HunterROSMessenger::TwistCmdCallback(
     const geometry_msgs::Twist::ConstPtr &msg) {
-  // double steer_cmd = msg->angular.z;
-  // if(steer_cmd > max_steer_angle_central)
-  //   steer_cmd = max_steer_angle_central;
-  // if(steer_cmd < - max_steer_angle_central)
-  //     steer_cmd = - max_steer_angle_central;
-  // ROS_DEBUG("max_steer_angle_central:%f",max_steer_angle_central);
+  double steer_cmd = msg->angular.z;
+  if(steer_cmd > max_steer_angle_central)
+    steer_cmd = max_steer_angle_central;
+  if(steer_cmd < - max_steer_angle_central)
+      steer_cmd = - max_steer_angle_central;
+  ROS_DEBUG("max_steer_angle_central:%f",max_steer_angle_central);
   // TODO add cmd limits here
   if (!simulated_robot_) {
-    // double phi_i = ConvertCentralAngleToInner(steer_cmd);
+    double phi_i = ConvertCentralAngleToInner(steer_cmd);
 //    double phi_i = steer_cmd;
-
-    double radian = 0;
-    double phi_i = AngelVelocity2Angel(*msg,radian);
-
+//    std::cout << "set steering angle: " << phi_i << std::endl;
     ROS_DEBUG("set steering angle:%f",phi_i);
     hunter_->ReleaseBrake();
     hunter_->SetMotionCommand(msg->linear.x,phi_i);
@@ -184,13 +181,14 @@ void HunterROSMessenger::PublishStateToROS() {
 
   bms_msg.SOC                   = bms_state.bms_basic_state.battery_soc;
   bms_msg.SOH                   = bms_state.bms_basic_state.battery_soh;
-  bms_msg.battery_voltage       = bms_state.bms_basic_state.voltage;
-  bms_msg.battery_current       = bms_state.bms_basic_state.current;
-  bms_msg.battery_temperature   = bms_state.bms_basic_state.temperature;
   bms_msg.Alarm_Status_1        = bms_state.bms_extend_state.alarm_status_1;
   bms_msg.Alarm_Status_2        = bms_state.bms_extend_state.alarm_status_2;
   bms_msg.Warning_Status_1      = bms_state.bms_extend_state.warn_status_1;
-  bms_msg.Warning_Status_1      = bms_state.bms_extend_state.warn_status_2;
+  bms_msg.Warning_Status_2      = bms_state.bms_extend_state.warn_status_2;
+  bms_msg.battery_voltage       = bms_state.bms_basic_state.voltage;
+  bms_msg.battery_current       = bms_state.bms_basic_state.current;
+  bms_msg.battery_temperature   = bms_state.bms_basic_state.temperature;
+
   BMS_status_publisher_.publish(bms_msg);
   status_publisher_.publish(status_msg);
 
@@ -303,29 +301,5 @@ void HunterROSMessenger::PublishOdometryToROS(double linear, double angular,
 //             << theta_ << ")" << std::endl;
 
   odom_publisher_.publish(odom_msg);
-}
-
-double HunterROSMessenger::AngelVelocity2Angel(geometry_msgs::Twist msg,double &radius)
-{
-  double linear = fabs(msg.linear.x);
-  double angular = fabs(msg.angular.z);
-  if(angular == 0)
-  {
-    return 0.0;
-  }
-
-  radius = linear / angular;
-
-  int k = msg.angular.z / fabs(msg.angular.z);
-  if ((radius-l)<0 )
-  {
-    return  k*max_steer_angle;
-  }
-
-  double phi_i;
-  phi_i = atan(l/(radius-w/2));
-  if(msg.linear.x<0)
-    phi_i *= -1.0;
-  return k*phi_i;
 }
 }  // namespace westonrobot
