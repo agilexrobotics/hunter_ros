@@ -21,5 +21,7 @@
 
         <param name="odom_frame" type="string" value="odom" />
         <param name="base_frame" type="string" value="base_link" />
+        <param name="robot_model" type="string" value="hunter2" />
+
     </node>
 </launch>
